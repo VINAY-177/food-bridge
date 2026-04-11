@@ -50,10 +50,10 @@ export default function Profile() {
   const initials = (user?.org_name || user?.email || "U").slice(0, 2).toUpperCase();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-7" data-testid="profile-page">
+    <div className="max-w-2xl mx-auto space-y-7 animate-fade-in-up" data-testid="profile-page">
       <div>
-        <h1 className="text-3xl font-black text-[#0F172A] tracking-tight">Profile</h1>
-        <p className="text-gray-500 mt-1.5 text-sm font-medium">Manage your account information</p>
+        <h1 className="text-4xl font-black text-[var(--text-primary)] tracking-tight drop-shadow-sm">Profile</h1>
+        <p className="text-[var(--text-secondary)] mt-2 text-sm font-semibold tracking-wide">Manage your account information</p>
       </div>
 
       {/* Profile Header Card */}

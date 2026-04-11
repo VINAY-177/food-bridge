@@ -20,39 +20,39 @@ const STATUS_LABELS = {
   delivered: "Delivered"
 };
 const STATUS_COLORS = {
-  pending: "bg-amber-50 text-amber-700 border-amber-200",
-  accepted: "bg-blue-50 text-blue-700 border-blue-200",
-  en_route: "bg-indigo-50 text-indigo-700 border-indigo-200",
-  collected: "bg-teal-50 text-teal-700 border-teal-200",
-  delivered: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  pending: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+  accepted: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+  en_route: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
+  collected: "bg-teal-500/10 text-teal-600 border-teal-500/20",
+  delivered: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
 };
 
  function StatusTimeline({ pickup }) {
   const currentIdx = STATUS_FLOW.indexOf(pickup.status);
   return (
-    <div className="flex items-start gap-0 mt-5 overflow-x-auto pb-2 scrollbar-none snap-x">
+    <div className="flex items-start gap-0 mt-8 overflow-x-auto pb-4 scrollbar-none snap-x active:cursor-grabbing">
       {STATUS_FLOW.map((s, i) => {
         const done = i <= currentIdx;
         const isCurrent = i === currentIdx;
         return (
-          <div key={s} className="flex items-start flex-1 min-w-0 snap-start">
+          <div key={s} className="flex items-start flex-1 min-w-[100px] snap-start">
             <div className="flex flex-col items-center flex-1">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300 z-10 ${
+              <div className={`badge-3d w-10 h-10 rounded-2xl flex items-center justify-center text-xs font-black shrink-0 transition-all duration-500 z-10 ${
                 done
-                  ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30"
+                  ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 ring-4 ring-emerald-500/10"
                   : "bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--text-secondary)] shadow-inner"
-              } ${isCurrent ? "ring-4 ring-emerald-500/20 scale-110" : "scale-100"}`}>
-                {done ? <CheckCircle2 className="w-5 h-5" /> : <span>{i + 1}</span>}
+              } ${isCurrent ? "scale-125 -translate-y-1" : "scale-100 opacity-60"}`}>
+                {done ? <CheckCircle2 className="w-5 h-5 drop-shadow-sm" /> : <span>{i + 1}</span>}
               </div>
-              <span className={`text-[10px] mt-2 font-bold text-center leading-tight whitespace-nowrap uppercase tracking-wider transition-colors ${
-                done ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--text-secondary)]"
+              <span className={`text-[9px] mt-4 font-black text-center leading-tight whitespace-nowrap uppercase tracking-[0.1em] transition-colors duration-300 ${
+                done ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--text-secondary)] opacity-40"
               }`}>
                 {STATUS_LABELS[s]}
               </span>
             </div>
             {i < STATUS_FLOW.length - 1 && (
-              <div className={`h-1 flex-1 mt-3.5 mx-1 min-w-[24px] rounded-full transition-colors duration-500 ${
-                i < currentIdx ? "bg-gradient-to-r from-emerald-500 to-teal-500" : "bg-[var(--bg-secondary)] border border-[var(--border-color)]"
+              <div className={`h-1.5 flex-1 mt-4.5 -mx-1 rounded-full transition-all duration-700 ${
+                i < currentIdx ? "bg-gradient-to-r from-emerald-500 to-teal-500 shadow-sm" : "bg-[var(--bg-secondary)] border border-[var(--border-color)]/30"
               }`} />
             )}
           </div>
@@ -67,32 +67,38 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
   return (
     <Card
       data-testid={`pickup-card-${pickup.id}`}
-      className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] depth-card transition-all hover:shadow-xl group"
+      className="bg-[var(--bg-card)] rounded-[2rem] border border-[var(--border-color)] transition-all card-3d card-hover p-0 overflow-hidden"
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        e.currentTarget.style.setProperty('--rx', `${y * -5}deg`);
+        e.currentTarget.style.setProperty('--ry', `${x * 5}deg`);
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.classList.add('card-3d-reset');
+        setTimeout(() => e.currentTarget.classList.remove('card-3d-reset'), 500);
+      }}
     >
-      <CardContent className="p-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-sm flex items-center justify-center shrink-0">
-                <Truck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+      <CardContent className="p-8">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-5 flex-wrap">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-inner flex items-center justify-center shrink-0 logo-3d">
+                <Truck className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
-                <h3 className="font-bold text-[var(--text-primary)] text-xl leading-tight tracking-tight">{pickup.listing_name}</h3>
-                <div className="flex items-center gap-3 text-xs text-[var(--text-secondary)] mt-1.5 flex-wrap">
-                  <span className="flex items-center gap-1.5 font-bold bg-[var(--bg-secondary)] px-2 py-0.5 rounded-md">
-                    <Package className="w-3.5 h-3.5 text-emerald-500" /> {pickup.listing_quantity} kg
+                <h3 className="font-black text-[var(--text-primary)] text-2xl leading-tight tracking-tight mb-2">{pickup.listing_name}</h3>
+                <div className="flex items-center gap-4 text-[10px] text-[var(--text-secondary)] flex-wrap">
+                  <span className="flex items-center gap-2 font-black bg-[var(--bg-secondary)] px-3 py-1 rounded-lg border border-[var(--border-color)]/30 shadow-sm">
+                    <Package className="w-3.5 h-3.5 text-emerald-500" /> {pickup.listing_quantity} KG
                   </span>
-                  <span className="flex items-center gap-1.5 font-semibold">
+                  <span className="flex items-center gap-2 font-bold opacity-80 uppercase tracking-widest">
                     <Clock className="w-3.5 h-3.5 text-orange-500" /> {pickup.created_at?.slice(0, 10)}
                   </span>
                   {user?.role !== "ngo" && pickup.ngo_name && (
-                    <span className="flex items-center gap-1.5 font-semibold bg-[var(--bg-secondary)] px-2 py-0.5 rounded-md">
-                      <Users className="w-3.5 h-3.5 text-blue-500" /> {pickup.ngo_name}
-                    </span>
-                  )}
-                  {user?.role !== "donor" && pickup.donor_name && (
-                    <span className="font-semibold text-[var(--text-secondary)] flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"/> From: {pickup.donor_name}
+                    <span className="flex items-center gap-2 font-black bg-[var(--bg-secondary)] px-3 py-1 rounded-lg border border-[var(--border-color)]/30 shadow-sm text-blue-500">
+                      <Users className="w-3.5 h-3.5" /> {pickup.ngo_name}
                     </span>
                   )}
                 </div>
@@ -100,8 +106,8 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 items-center">
-            <Badge variant="outline" className={`font-bold text-[10px] uppercase tracking-wider px-2 py-1 shadow-sm border ${STATUS_COLORS[pickup.status]}`}>
+          <div className="flex flex-wrap gap-3 items-center">
+            <Badge variant="outline" className={`font-black text-[10px] uppercase tracking-widest px-3 py-1.5 shadow-sm border-2 rounded-xl h-9 ${STATUS_COLORS[pickup.status]}`}>
               {STATUS_LABELS[pickup.status]}
             </Badge>
             {(user?.role === "ngo" || user?.role === "admin") && next && (
@@ -109,7 +115,7 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
                 size="sm"
                 onClick={() => onUpdateStatus(pickup)}
                 data-testid={`update-status-btn-${pickup.id}`}
-                className="btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold shadow-md shadow-emerald-500/30 gap-1 h-9"
+                className="btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-emerald-500/20 gap-2 h-9 px-4"
               >
                 {STATUS_LABELS[next]} <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
@@ -120,9 +126,9 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
                 variant="outline"
                 onClick={() => onRedistribution(pickup)}
                 data-testid={`redist-btn-${pickup.id}`}
-                className="border-emerald-600 text-emerald-600 hover:bg-emerald-500/10 hover:text-emerald-700 rounded-xl font-bold h-9 bg-[var(--bg-card)]"
+                className="rounded-xl font-black uppercase tracking-widest text-[10px] h-9 px-4 border-emerald-500/50 text-emerald-600 hover:bg-emerald-500/5 transition-all shadow-sm"
               >
-                Log Redistribution
+                Log Distribution
               </Button>
             )}
           </div>
@@ -132,14 +138,13 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
 
         {/* Timestamps */}
         {pickup.timestamps && Object.values(pickup.timestamps).some(Boolean) && (
-          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-[var(--text-secondary)] border-t border-[var(--border-color)]/50 pt-4 bg-[var(--bg-body)] -mx-6 -mb-6 px-6 pb-4 rounded-b-2xl">
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[10px] text-[var(--text-secondary)] border-t border-[var(--border-color)]/30 pt-6 bg-[var(--bg-secondary)]/30 -mx-8 -mb-8 px-8 pb-6 rounded-b-[2rem]">
             {Object.entries(pickup.timestamps).map(([key, val]) =>
               val ? (
-                <span key={key} className="font-semibold flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--text-secondary)] opacity-50"/>
-                  <span className="uppercase tracking-widest text-[9px] opacity-70">{STATUS_LABELS[key]}:</span> 
-                  {val.slice(0, 16).replace("T", " ")}
-                </span>
+                <div key={key} className="font-bold flex flex-col gap-1">
+                  <span className="uppercase tracking-[0.2em] text-[8px] opacity-40">{STATUS_LABELS[key]}</span> 
+                  <span className="text-[var(--text-primary)] opacity-80">{val.slice(0, 16).replace("T", " ")}</span>
+                </div>
               ) : null
             )}
           </div>

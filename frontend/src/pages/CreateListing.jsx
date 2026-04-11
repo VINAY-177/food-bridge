@@ -103,99 +103,99 @@ export default function CreateListing() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-7" data-testid="create-listing-page">
+    <div className="max-w-3xl mx-auto space-y-10 animate-fade-in-up" data-testid="create-listing-page">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <Button
           variant="outline"
           size="icon"
           onClick={() => navigate("/listings")}
           data-testid="back-to-listings"
-          className="shrink-0 rounded-2xl h-11 w-11 hover:bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-primary)]"
+          className="shrink-0 rounded-2xl h-12 w-12 hover:bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-primary)] shadow-sm transition-all hover:-translate-x-1"
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-black text-[var(--text-primary)] tracking-tight">Create Food Listing</h1>
-          <p className="text-[var(--text-secondary)] text-sm mt-0.5 font-medium">Share surplus food with those in need</p>
+          <h1 className="text-4xl font-black text-[var(--text-primary)] tracking-tight drop-shadow-sm">Create Listing</h1>
+          <p className="text-[var(--text-secondary)] text-sm mt-2 font-semibold tracking-wide uppercase opacity-70">Share surplus food with the community</p>
         </div>
       </div>
 
-      <Card className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] depth-card shadow-sm">
-        <CardContent className="p-8 space-y-10">
+      <Card className="bg-[var(--bg-card)] rounded-[2.5rem] border border-[var(--border-color)] depth-card shadow-2xl overflow-hidden relative">
+        <CardContent className="p-10 space-y-12 relative z-10">
           {/* Food Details */}
-          <FormSection title="Food Details">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormSection title="Core Details">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <FormField label="Food Name" required>
                 <Input
                   id="food_name"
                   data-testid="listing-food-name"
-                  placeholder="e.g. Biryani, Bread Loaves"
+                  placeholder="e.g. Freshly Baked Sourdough"
                   value={form.food_name}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/30 transition-all font-medium"
                   onChange={(e) => update("food_name", e.target.value)}
                 />
               </FormField>
-              <FormField label="Category">
+              <FormField label="Type / Category">
                 <Select value={form.category} onValueChange={(v) => update("category", v)}>
-                  <SelectTrigger data-testid="listing-category" className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50">
+                  <SelectTrigger data-testid="listing-category" className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/30 font-bold">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[var(--bg-card)] border-[var(--border-color)]">
+                  <SelectContent className="bg-[var(--bg-card)] border-[var(--border-color)] rounded-xl shadow-2xl">
                     {CATEGORIES.map((c) => (
-                      <SelectItem className="text-[var(--text-primary)] focus:bg-[var(--bg-secondary)]" key={c.value} value={c.value}>{c.label}</SelectItem>
+                      <SelectItem className="text-[var(--text-primary)] font-semibold cursor-pointer" key={c.value} value={c.value}>{c.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </FormField>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField label="Quantity (kg)" required hint="Enter the approximate weight in kilograms">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <FormField label="Mass (Kilograms)" required hint="Approximate total net weight">
                 <Input
                   id="quantity"
                   data-testid="listing-quantity"
                   type="number"
                   min="0.1"
                   step="0.1"
-                  placeholder="e.g. 10"
+                  placeholder="e.g. 5.5"
                   value={form.quantity}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/30 font-bold"
                   onChange={(e) => update("quantity", e.target.value)}
                 />
               </FormField>
-              <FormField label="Storage Condition">
+              <FormField label="Stability Environment">
                 <Select value={form.storage_condition} onValueChange={(v) => update("storage_condition", v)}>
-                  <SelectTrigger data-testid="listing-storage" className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50">
+                  <SelectTrigger data-testid="listing-storage" className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/30 font-bold">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[var(--bg-card)] border-[var(--border-color)]">
+                  <SelectContent className="bg-[var(--bg-card)] border-[var(--border-color)] rounded-xl shadow-2xl">
                     {STORAGE.map((s) => (
-                      <SelectItem className="text-[var(--text-primary)] focus:bg-[var(--bg-secondary)]" key={s.value} value={s.value}>{s.label}</SelectItem>
+                      <SelectItem className="text-[var(--text-primary)] font-semibold cursor-pointer" key={s.value} value={s.value}>{s.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </FormField>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField label="Preparation Time" hint="When was this food prepared?">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <FormField label="Prep Timestamp" hint="When was this food finalized?">
                 <Input
                   id="prep_time"
                   data-testid="listing-prep-time"
                   type="datetime-local"
                   value={form.preparation_time}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm [color-scheme:light_dark]"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm [color-scheme:light_dark] font-medium"
                   onChange={(e) => update("preparation_time", e.target.value)}
                 />
               </FormField>
-              <FormField label="Expiry Time" required hint="Food must be picked up before this time">
+              <FormField label="Expiry Deadline" required hint="Must be picked up before this window closes">
                 <Input
                   id="expiry_time"
                   data-testid="listing-expiry-time"
                   type="datetime-local"
                   value={form.expiry_time}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm [color-scheme:light_dark]"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm [color-scheme:light_dark] font-bold"
                   onChange={(e) => update("expiry_time", e.target.value)}
                 />
               </FormField>
@@ -203,38 +203,38 @@ export default function CreateListing() {
           </FormSection>
 
           {/* Pickup Location */}
-          <FormSection title="Pickup Location">
-            <FormField label="Pickup Address">
+          <FormSection title="Logistics & Location">
+            <FormField label="Dispatch Address">
               <Textarea
                 id="address"
                 data-testid="listing-address"
-                placeholder="Full address where the food can be collected..."
+                placeholder="Detailed coordinates or address for collection..."
                 value={form.pickup_address}
-                className="rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm resize-none focus:ring-2 focus:ring-emerald-500/50 min-h-[80px]"
+                className="rounded-2xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-sm resize-none focus:ring-2 focus:ring-emerald-500/30 min-h-[100px] font-medium p-4"
                 onChange={(e) => update("pickup_address", e.target.value)}
                 rows={3}
               />
             </FormField>
-            <div className="grid grid-cols-2 gap-6">
-              <FormField label="Latitude" hint="Default: New Delhi">
+            <div className="grid grid-cols-2 gap-8">
+              <FormField label="Lat Geo-Coord">
                 <Input
                   id="lat"
                   data-testid="listing-latitude"
                   type="number"
                   step="0.0001"
                   value={form.latitude}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-xs focus:ring-2 focus:ring-emerald-500/30 opacity-80"
                   onChange={(e) => update("latitude", e.target.value)}
                 />
               </FormField>
-              <FormField label="Longitude">
+              <FormField label="Long Geo-Coord">
                 <Input
                   id="lng"
                   data-testid="listing-longitude"
                   type="number"
                   step="0.0001"
                   value={form.longitude}
-                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
+                  className="h-12 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)]/50 text-[var(--text-primary)] text-xs focus:ring-2 focus:ring-emerald-500/30 opacity-80"
                   onChange={(e) => update("longitude", e.target.value)}
                 />
               </FormField>
@@ -242,49 +242,51 @@ export default function CreateListing() {
           </FormSection>
 
           {/* Urgent Toggle */}
-          <div className={`flex items-center justify-between p-6 rounded-2xl border-2 transition-colors duration-300 ${
-            form.urgent_flag ? "bg-orange-500/10 border-orange-500/30" : "bg-[var(--bg-secondary)] border-[var(--border-color)]"
+          <div className={`flex items-center justify-between p-8 rounded-[2rem] border-2 transition-all duration-500 group/urgent ${
+            form.urgent_flag 
+              ? "bg-orange-500/10 border-orange-500/50 shadow-xl shadow-orange-500/10" 
+              : "bg-[var(--bg-secondary)]/30 border-[var(--border-color)]"
           }`}>
-            <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 shadow-inner ${
-                form.urgent_flag ? "bg-orange-500/20" : "bg-[var(--bg-card)] border border-[var(--border-color)]"
+            <div className="flex items-center gap-6">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner badge-3d ${
+                form.urgent_flag ? "bg-orange-500 shadow-orange-500/40 text-white" : "bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] opacity-60"
               }`}>
-                <Zap className={`w-6 h-6 transition-colors ${form.urgent_flag ? "text-orange-500" : "text-[var(--text-secondary)]"}`} />
+                <Zap className={`w-7 h-7 ${form.urgent_flag ? "animate-pulse" : ""}`} />
               </div>
               <div>
-                <p className="font-bold text-[var(--text-primary)] text-base tracking-tight leading-tight">Mark as Urgent</p>
-                <p className="text-xs text-[var(--text-secondary)] font-medium mt-1 uppercase tracking-wider">Prioritize for immediate pickup by NGOs</p>
+                <p className="font-black text-[var(--text-primary)] text-lg tracking-tight leading-none mb-1.5">Priority Dispatch</p>
+                <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-[0.1em] opacity-70">Mark as urgent for immediate NGO notification</p>
               </div>
             </div>
             <Switch
               data-testid="listing-urgent"
               checked={form.urgent_flag}
-              className="data-[state=checked]:bg-orange-500"
+              className="data-[state=checked]:bg-orange-500 scale-125"
               onCheckedChange={(v) => update("urgent_flag", v)}
             />
           </div>
 
           {/* Actions */}
-          <div className="flex gap-4 pt-6 border-t border-[var(--border-color)]/50">
+          <div className="flex flex-col sm:flex-row gap-5 pt-8 border-t border-[var(--border-color)]/30">
             <Button
               variant="outline"
               onClick={() => handleSubmit("draft")}
               disabled={loading}
               data-testid="save-draft-btn"
-              className="flex-1 h-12 rounded-xl border-[var(--border-color)] text-[var(--text-primary)] bg-[var(--bg-card)] font-bold hover:bg-[var(--bg-secondary)] transition-all"
+              className="flex-1 h-12 rounded-xl border-[var(--border-color)] text-[var(--text-primary)] bg-[var(--bg-card)] font-black uppercase text-[10px] tracking-widest hover:bg-[var(--bg-secondary)] transition-all shadow-sm"
             >
-              <Save className="w-4 h-4 mr-2" /> Save Draft
+              <Save className="w-4 h-4 mr-2" /> Save to Drafts
             </Button>
             <Button
               onClick={() => handleSubmit("available")}
               disabled={loading}
               data-testid="publish-listing-btn"
-              className="flex-1 h-12 btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/30 transition-all"
+              className="flex-1 h-12 btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-emerald-500/20"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-3">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Publishing...
+                  Broadcasting...
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
