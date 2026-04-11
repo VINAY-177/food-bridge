@@ -1,6 +1,11 @@
 {
   "rootDirectory": "frontend",
+  "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "npm run build",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
