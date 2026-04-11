@@ -136,7 +136,7 @@ export default function MapView() {
                                 color: STATUS_COLORS_MAP[listing.status]
                                 }}
                             >
-                                {status.replace("_", " ")}
+                                {listing.status?.replace("_", " ")}
                             </span>
                         </div>
                       </div>

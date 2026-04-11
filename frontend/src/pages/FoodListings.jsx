@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Plus, Search, MapPin, Clock, AlertTriangle, Package2, Filter } from "lucide-react";
+import { Plus, Search, MapPin, Clock, AlertTriangle, Package2, Filter, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 const statusColors = {
@@ -55,7 +55,7 @@ export default function FoodListings() {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, user]);
+  }, [statusFilter, user?.id, user?.role]);
 
   useEffect(() => {
     fetchListings();
@@ -76,10 +76,12 @@ export default function FoodListings() {
     }
   };
 
-  const filtered = listings.filter((l) =>
-    l.food_name?.toLowerCase().includes(search.toLowerCase()) ||
-    l.category?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = Array.isArray(listings) 
+    ? listings.filter((l) =>
+        l.food_name?.toLowerCase().includes(search.toLowerCase()) ||
+        l.category?.toLowerCase().includes(search.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="space-y-8 animate-fade-in-up" data-testid="food-listings-page">
