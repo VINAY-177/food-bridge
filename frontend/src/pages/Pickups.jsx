@@ -27,32 +27,32 @@ const STATUS_COLORS = {
   delivered: "bg-emerald-50 text-emerald-700 border-emerald-200",
 };
 
-function StatusTimeline({ pickup }) {
+ function StatusTimeline({ pickup }) {
   const currentIdx = STATUS_FLOW.indexOf(pickup.status);
   return (
-    <div className="flex items-start gap-0 mt-4 overflow-x-auto pb-1">
+    <div className="flex items-start gap-0 mt-5 overflow-x-auto pb-2 scrollbar-none snap-x">
       {STATUS_FLOW.map((s, i) => {
         const done = i <= currentIdx;
         const isCurrent = i === currentIdx;
         return (
-          <div key={s} className="flex items-start flex-1 min-w-0">
+          <div key={s} className="flex items-start flex-1 min-w-0 snap-start">
             <div className="flex flex-col items-center flex-1">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all ${
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300 z-10 ${
                 done
-                  ? "bg-[#2E7D32] text-white shadow-sm shadow-green-200"
-                  : "bg-gray-100 text-gray-400"
-              } ${isCurrent ? "ring-4 ring-[#2E7D32]/15" : ""}`}>
-                {done ? <CheckCircle2 className="w-4 h-4" /> : <span>{i + 1}</span>}
+                  ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30"
+                  : "bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--text-secondary)] shadow-inner"
+              } ${isCurrent ? "ring-4 ring-emerald-500/20 scale-110" : "scale-100"}`}>
+                {done ? <CheckCircle2 className="w-5 h-5" /> : <span>{i + 1}</span>}
               </div>
-              <span className={`text-[10px] mt-1.5 font-semibold text-center leading-tight whitespace-nowrap ${
-                done ? "text-[#2E7D32]" : "text-gray-400"
+              <span className={`text-[10px] mt-2 font-bold text-center leading-tight whitespace-nowrap uppercase tracking-wider transition-colors ${
+                done ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--text-secondary)]"
               }`}>
                 {STATUS_LABELS[s]}
               </span>
             </div>
             {i < STATUS_FLOW.length - 1 && (
-              <div className={`h-0.5 flex-1 mt-3.5 mx-1 min-w-[20px] rounded-full transition-colors ${
-                i < currentIdx ? "bg-[#2E7D32]" : "bg-gray-200"
+              <div className={`h-1 flex-1 mt-3.5 mx-1 min-w-[24px] rounded-full transition-colors duration-500 ${
+                i < currentIdx ? "bg-gradient-to-r from-emerald-500 to-teal-500" : "bg-[var(--bg-secondary)] border border-[var(--border-color)]"
               }`} />
             )}
           </div>
@@ -67,31 +67,33 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
   return (
     <Card
       data-testid={`pickup-card-${pickup.id}`}
-      className="bg-white rounded-2xl border border-gray-100 shadow-sm card-hover"
+      className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] depth-card transition-all hover:shadow-xl group"
     >
       <CardContent className="p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="w-9 h-9 rounded-xl bg-[#E8F5E9] flex items-center justify-center shrink-0">
-                <Truck className="w-5 h-5 text-[#2E7D32]" />
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-sm flex items-center justify-center shrink-0">
+                <Truck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
-                <h3 className="font-bold text-[#0F172A] text-base leading-tight">{pickup.listing_name}</h3>
-                <div className="flex items-center gap-3 text-xs text-gray-400 mt-1 flex-wrap">
-                  <span className="flex items-center gap-1 font-medium">
-                    <Package className="w-3 h-3" /> {pickup.listing_quantity} kg
+                <h3 className="font-bold text-[var(--text-primary)] text-xl leading-tight tracking-tight">{pickup.listing_name}</h3>
+                <div className="flex items-center gap-3 text-xs text-[var(--text-secondary)] mt-1.5 flex-wrap">
+                  <span className="flex items-center gap-1.5 font-bold bg-[var(--bg-secondary)] px-2 py-0.5 rounded-md">
+                    <Package className="w-3.5 h-3.5 text-emerald-500" /> {pickup.listing_quantity} kg
                   </span>
-                  <span className="flex items-center gap-1 font-medium">
-                    <Clock className="w-3 h-3" /> {pickup.created_at?.slice(0, 10)}
+                  <span className="flex items-center gap-1.5 font-semibold">
+                    <Clock className="w-3.5 h-3.5 text-orange-500" /> {pickup.created_at?.slice(0, 10)}
                   </span>
                   {user?.role !== "ngo" && pickup.ngo_name && (
-                    <span className="flex items-center gap-1 font-medium">
-                      <Users className="w-3 h-3" /> {pickup.ngo_name}
+                    <span className="flex items-center gap-1.5 font-semibold bg-[var(--bg-secondary)] px-2 py-0.5 rounded-md">
+                      <Users className="w-3.5 h-3.5 text-blue-500" /> {pickup.ngo_name}
                     </span>
                   )}
                   {user?.role !== "donor" && pickup.donor_name && (
-                    <span className="font-medium text-gray-400">From: {pickup.donor_name}</span>
+                    <span className="font-semibold text-[var(--text-secondary)] flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"/> From: {pickup.donor_name}
+                    </span>
                   )}
                 </div>
               </div>
@@ -99,7 +101,7 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
           </div>
 
           <div className="flex flex-wrap gap-2 items-center">
-            <Badge variant="outline" className={`font-semibold text-xs border ${STATUS_COLORS[pickup.status]}`}>
+            <Badge variant="outline" className={`font-bold text-[10px] uppercase tracking-wider px-2 py-1 shadow-sm border ${STATUS_COLORS[pickup.status]}`}>
               {STATUS_LABELS[pickup.status]}
             </Badge>
             {(user?.role === "ngo" || user?.role === "admin") && next && (
@@ -107,9 +109,9 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
                 size="sm"
                 onClick={() => onUpdateStatus(pickup)}
                 data-testid={`update-status-btn-${pickup.id}`}
-                className="bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white rounded-xl font-semibold shadow-sm gap-1"
+                className="btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold shadow-md shadow-emerald-500/30 gap-1 h-9"
               >
-                {STATUS_LABELS[next]} <ArrowRight className="w-3.5 h-3.5" />
+                {STATUS_LABELS[next]} <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             )}
             {user?.role === "ngo" && pickup.status === "delivered" && (
@@ -118,7 +120,7 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
                 variant="outline"
                 onClick={() => onRedistribution(pickup)}
                 data-testid={`redist-btn-${pickup.id}`}
-                className="border-[#2E7D32] text-[#2E7D32] hover:bg-[#E8F5E9] rounded-xl font-semibold"
+                className="border-emerald-600 text-emerald-600 hover:bg-emerald-500/10 hover:text-emerald-700 rounded-xl font-bold h-9 bg-[var(--bg-card)]"
               >
                 Log Redistribution
               </Button>
@@ -130,11 +132,13 @@ function PickupCard({ pickup, user, onUpdateStatus, onRedistribution }) {
 
         {/* Timestamps */}
         {pickup.timestamps && Object.values(pickup.timestamps).some(Boolean) && (
-          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-gray-400 border-t border-gray-50 pt-3">
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-[var(--text-secondary)] border-t border-[var(--border-color)]/50 pt-4 bg-[var(--bg-body)] -mx-6 -mb-6 px-6 pb-4 rounded-b-2xl">
             {Object.entries(pickup.timestamps).map(([key, val]) =>
               val ? (
-                <span key={key} className="font-medium">
-                  <span className="text-gray-300">{STATUS_LABELS[key]}:</span> {val.slice(0, 16).replace("T", " ")}
+                <span key={key} className="font-semibold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--text-secondary)] opacity-50"/>
+                  <span className="uppercase tracking-widest text-[9px] opacity-70">{STATUS_LABELS[key]}:</span> 
+                  {val.slice(0, 16).replace("T", " ")}
                 </span>
               ) : null
             )}
@@ -217,18 +221,18 @@ export default function Pickups() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="skeleton h-9 w-48 mb-2" />
-        <div className="skeleton h-4 w-64 mb-8" />
+        <div className="h-9 w-48 mb-2 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl opacity-50 animate-pulse" />
+        <div className="h-4 w-64 mb-8 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-md opacity-50 animate-pulse" />
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 space-y-3 animate-pulse">
+          <div key={i} className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] p-6 space-y-3 animate-pulse depth-card opacity-50">
             <div className="flex gap-3">
-              <div className="skeleton h-9 w-9 rounded-xl" />
-              <div className="space-y-2 flex-1">
-                <div className="skeleton h-5 w-1/2" />
-                <div className="skeleton h-3 w-1/3" />
+              <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-xl" />
+              <div className="space-y-2 flex-1 pt-1">
+                <div className="h-6 bg-[var(--bg-secondary)] rounded-md w-1/2" />
+                <div className="h-3 bg-[var(--bg-secondary)] rounded-md w-1/3" />
               </div>
             </div>
-            <div className="skeleton h-10 w-full rounded-xl mt-4" />
+            <div className="h-14 bg-[var(--bg-secondary)] w-full rounded-xl mt-6" />
           </div>
         ))}
       </div>
@@ -238,28 +242,28 @@ export default function Pickups() {
   return (
     <div className="space-y-7" data-testid="pickups-page">
       <div>
-        <h1 className="text-3xl font-black text-[#0F172A] tracking-tight">
+        <h1 className="text-3xl font-black text-[var(--text-primary)] tracking-tight">
           {user?.role === "ngo" ? "My Pickups" : "Pickup Status"}
         </h1>
-        <p className="text-gray-500 mt-1.5 text-sm font-medium">
+        <p className="text-[var(--text-secondary)] mt-1.5 text-sm font-medium">
           Track and manage your food pickups in real time
         </p>
       </div>
 
       {pickups.length === 0 ? (
-        <Card className="bg-white rounded-2xl border border-gray-100">
+        <Card className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] depth-card shadow-sm">
           <CardContent className="flex flex-col items-center py-20">
-            <div className="w-20 h-20 rounded-3xl bg-[#E8F5E9] flex items-center justify-center mb-5">
-              <Truck className="w-10 h-10 text-[#2E7D32]" />
+            <div className="w-20 h-20 rounded-3xl bg-[var(--bg-secondary)] border border-[var(--border-color)] flex items-center justify-center mb-5 shadow-inner">
+              <Truck className="w-10 h-10 text-[var(--text-secondary)] opacity-50" />
             </div>
-            <p className="text-gray-700 font-semibold text-lg">No pickups yet</p>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-[var(--text-primary)] font-bold text-lg">No pickups yet</p>
+            <p className="text-[var(--text-secondary)] text-sm mt-1">
               {user?.role === "ngo" ? "Browse listings to claim a pickup" : "Pickups will appear here once an NGO claims your donation"}
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {pickups.map((pickup) => (
             <PickupCard
               key={pickup.id}
@@ -274,37 +278,37 @@ export default function Pickups() {
 
       {/* Update Status Dialog */}
       <Dialog open={!!updateDialog} onOpenChange={() => { setUpdateDialog(null); setNotes(""); }}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-2xl max-w-md bg-[var(--bg-card)] border-[var(--border-color)] p-6 shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Update Pickup Status</DialogTitle>
+            <DialogTitle className="text-xl font-black tracking-tight text-[var(--text-primary)]">Update Pickup</DialogTitle>
           </DialogHeader>
-          <div className="bg-[#F1F8E9] rounded-xl p-4 my-1">
-            <p className="text-sm text-gray-600">
-              Moving <strong className="text-[#0F172A]">{updateDialog?.listing_name}</strong> to{" "}
-              <Badge className="bg-[#2E7D32] text-white text-xs font-bold ml-1">
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 my-2">
+            <p className="text-sm text-[var(--text-primary)] font-medium leading-relaxed">
+              Moving <strong className="text-[var(--text-primary)]">{updateDialog?.listing_name}</strong> to{" "}
+              <Badge className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 text-xs font-bold ml-1 px-2 py-0.5 shadow-sm">
                 {STATUS_LABELS[getNextStatus(updateDialog?.status)]}
               </Badge>
             </p>
           </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold text-gray-700">Notes (optional)</Label>
+          <div className="space-y-2 mt-2">
+            <Label className="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Notes (optional)</Label>
             <Textarea
               data-testid="status-update-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add any relevant notes..."
-              className="rounded-xl border-gray-200 text-sm"
+              className="rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm min-h-[100px] focus:ring-2 focus:ring-emerald-500/50"
             />
           </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => { setUpdateDialog(null); setNotes(""); }} className="rounded-xl">
+          <DialogFooter className="gap-2 mt-4">
+            <Button variant="outline" onClick={() => { setUpdateDialog(null); setNotes(""); }} className="rounded-xl h-10 border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">
               Cancel
             </Button>
             <Button
               onClick={handleUpdateStatus}
               disabled={actionLoading}
               data-testid="confirm-status-update"
-              className="bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white rounded-xl font-semibold"
+              className="btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold h-10 px-6 shadow-lg shadow-emerald-500/30"
             >
               {actionLoading ? (
                 <span className="flex items-center gap-2">
@@ -319,52 +323,52 @@ export default function Pickups() {
 
       {/* Redistribution Dialog */}
       <Dialog open={!!redistDialog} onOpenChange={() => setRedistDialog(null)}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-2xl max-w-md bg-[var(--bg-card)] border-[var(--border-color)] p-6 shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Log Redistribution</DialogTitle>
+            <DialogTitle className="text-xl font-black tracking-tight text-[var(--text-primary)]">Log Redistribution</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-500">Record how this food was distributed to beneficiaries.</p>
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-gray-700">Beneficiaries Count <span className="text-red-500">*</span></Label>
+          <p className="text-sm text-[var(--text-secondary)] font-medium -mt-2">Record how this food was distributed to beneficiaries.</p>
+          <div className="space-y-4 mt-2">
+            <div className="space-y-2">
+              <Label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Beneficiaries Count <span className="text-red-500">*</span></Label>
               <Input
                 data-testid="redist-beneficiaries"
                 type="number"
                 value={redistForm.beneficiaries_count}
                 onChange={(e) => setRedistForm({ ...redistForm, beneficiaries_count: e.target.value })}
                 placeholder="Number of people served"
-                className="h-11 rounded-xl border-gray-200 text-sm"
+                className="h-11 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-gray-700">Portion Size (kg per person)</Label>
+            <div className="space-y-2">
+              <Label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Portion Size (kg per pt)</Label>
               <Input
                 data-testid="redist-portion"
                 type="number"
                 step="0.1"
                 value={redistForm.portion_size}
                 onChange={(e) => setRedistForm({ ...redistForm, portion_size: e.target.value })}
-                className="h-11 rounded-xl border-gray-200 text-sm"
+                className="h-11 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-gray-700">Notes</Label>
+            <div className="space-y-2">
+              <Label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Notes</Label>
               <Textarea
                 data-testid="redist-notes"
                 value={redistForm.notes}
                 onChange={(e) => setRedistForm({ ...redistForm, notes: e.target.value })}
                 placeholder="Any additional notes..."
-                className="rounded-xl border-gray-200 text-sm"
+                className="rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm min-h-[80px] focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
           </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setRedistDialog(null)} className="rounded-xl">Cancel</Button>
+          <DialogFooter className="gap-2 mt-4">
+            <Button variant="outline" onClick={() => setRedistDialog(null)} className="rounded-xl h-10 border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">Cancel</Button>
             <Button
               onClick={handleRedistribution}
               disabled={actionLoading}
               data-testid="confirm-redistribution"
-              className="bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white rounded-xl font-semibold"
+              className="btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold h-10 px-6 shadow-lg shadow-emerald-500/30"
             >
               {actionLoading ? (
                 <span className="flex items-center gap-2">

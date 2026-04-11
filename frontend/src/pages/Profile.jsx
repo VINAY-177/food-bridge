@@ -57,32 +57,30 @@ export default function Profile() {
       </div>
 
       {/* Profile Header Card */}
-      <Card className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="h-24 bg-gradient-to-r from-[#2E7D32] to-[#66BB6A] relative">
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"
-          }} />
+      <Card className="bg-[var(--bg-card)] border-[var(--border-color)] rounded-2xl shadow-sm overflow-hidden depth-card">
+        <div className="h-32 bg-gradient-to-r from-emerald-600 to-teal-500 relative z-0">
+          <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzR2LTRoLTJ2NGgtNHYyaDR2NGgydi00aDR2LTJoLTR6bTAtMzBWMGgtMnY0aC00djJoNHY0aDJWNmg0VjRoLTR6TTYgMzR2LTRINFY0SDB2Mmg0djRoMnYtNGg0di0ySDZ6TTYgNFYwSDR2NEgwdjJoNHY0aDJWNmg0VjRoLTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')]" />
         </div>
-        <CardContent className="px-7 pb-7 pt-0">
-          <div className="flex items-end gap-5 -mt-10 mb-5">
+        <CardContent className="px-7 pb-7 pt-0 relative z-10">
+          <div className="flex items-end gap-5 -mt-12 mb-5">
             <div
-              className="w-20 h-20 rounded-2xl flex items-center justify-center text-xl font-black shadow-lg border-4 border-white shrink-0"
+              className="w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-black shadow-xl border-[6px] border-[var(--bg-card)] shrink-0 transform transition-transform hover:scale-105 duration-300"
               style={{ backgroundColor: roleConfig.bg, color: roleConfig.color }}
             >
               {initials}
             </div>
-            <div className="pb-1">
-              <h2 className="text-xl font-bold text-[#0F172A] leading-tight">
+            <div className="pb-2">
+              <h2 className="text-2xl font-bold text-[var(--text-primary)] leading-tight tracking-tight">
                 {user?.org_name || user?.email}
               </h2>
-              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+              <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <Badge
-                  className="text-xs font-bold border-0 px-2.5 py-0.5"
+                  className="text-xs font-bold border-0 px-3 py-1 shadow-sm"
                   style={{ backgroundColor: roleConfig.bg, color: roleConfig.color }}
                 >
                   {roleConfig.icon} {roleConfig.label}
                 </Badge>
-                <span className="text-sm text-gray-400 font-medium">{user?.email}</span>
+                <span className="text-sm text-[var(--text-secondary)] font-medium ml-1">{user?.email}</span>
               </div>
             </div>
           </div>
@@ -92,7 +90,7 @@ export default function Profile() {
               <Input
                 data-testid="profile-org-name"
                 value={form.org_name}
-                className="h-11 rounded-xl border-gray-200 text-sm"
+                className="h-11 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm transition-all focus:ring-2 focus:ring-emerald-500/50"
                 onChange={(e) => setForm({ ...form, org_name: e.target.value })}
                 placeholder="Enter your organization name"
               />
@@ -102,7 +100,7 @@ export default function Profile() {
               <Input
                 data-testid="profile-service-area"
                 value={form.service_area}
-                className="h-11 rounded-xl border-gray-200 text-sm"
+                className="h-11 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm transition-all focus:ring-2 focus:ring-emerald-500/50"
                 onChange={(e) => setForm({ ...form, service_area: e.target.value })}
                 placeholder="e.g. New Delhi, Mumbai"
               />
@@ -112,7 +110,7 @@ export default function Profile() {
               <Input
                 data-testid="profile-phone"
                 value={form.phone}
-                className="h-11 rounded-xl border-gray-200 text-sm"
+                className="h-11 rounded-xl border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-primary)] text-sm transition-all focus:ring-2 focus:ring-emerald-500/50"
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 placeholder="+91 XXXXX XXXXX"
               />
@@ -123,21 +121,21 @@ export default function Profile() {
                 <Input
                   value={user?.email || ""}
                   disabled
-                  className="h-11 rounded-xl border-gray-200 text-sm bg-gray-50 text-gray-500 pr-20"
+                  className="h-11 rounded-xl border-[var(--border-color)] text-sm bg-[var(--bg-secondary)] opacity-70 text-[var(--text-primary)] pr-20"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <Badge className="bg-gray-100 text-gray-500 text-xs font-semibold border-0">Locked</Badge>
+                  <Badge className="bg-[var(--bg-card)] text-[var(--text-secondary)] shadow-sm text-xs font-semibold border border-[var(--border-color)]">Locked</Badge>
                 </div>
               </div>
-              <p className="text-xs text-gray-400 font-medium">Your email address cannot be changed.</p>
+              <p className="text-xs text-[var(--text-secondary)] font-medium">Your email address cannot be changed.</p>
             </ProfileField>
 
-            <div className="pt-2 border-t border-gray-100">
+            <div className="pt-2 border-t border-[var(--border-color)]">
               <Button
                 onClick={handleSave}
                 disabled={loading}
                 data-testid="save-profile-btn"
-                className="w-full h-11 bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white rounded-xl font-semibold shadow-md shadow-green-100"
+                className="w-full h-11 btn-3d bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/30"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -156,22 +154,22 @@ export default function Profile() {
       </Card>
 
       {/* Account Info Card */}
-      <Card className="bg-white rounded-2xl border border-gray-100 shadow-sm">
+      <Card className="bg-[var(--bg-card)] depth-card rounded-2xl border border-[var(--border-color)] shadow-sm">
         <CardContent className="p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-gray-500" />
+            <div className="w-8 h-8 rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center">
+              <Shield className="w-4 h-4 text-emerald-500" />
             </div>
-            <h3 className="font-bold text-[#0F172A] text-sm">Account Information</h3>
+            <h3 className="font-bold text-[var(--text-primary)] text-sm">Account Information</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Account Type</p>
-              <p className="font-bold text-[#0F172A]">{roleConfig.label}</p>
+            <div className="bg-[var(--bg-secondary)] rounded-xl p-4 border border-[var(--border-color)]">
+              <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Account Type</p>
+              <p className="font-bold text-[var(--text-primary)]">{roleConfig.label}</p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">User ID</p>
-              <p className="font-bold text-[#0F172A] font-mono text-xs truncate">{user?.id || "—"}</p>
+            <div className="bg-[var(--bg-secondary)] rounded-xl p-4 border border-[var(--border-color)]">
+              <p className="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1">User ID</p>
+              <p className="font-bold text-[var(--text-primary)] font-mono text-[10px] sm:text-xs truncate">{user?.id || "—"}</p>
             </div>
           </div>
         </CardContent>
