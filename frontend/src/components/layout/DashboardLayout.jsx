@@ -6,10 +6,10 @@ export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F8FAF8]">
+    <div className="flex h-screen overflow-hidden" style={{ background: "hsl(140, 25%, 97%)" }}>
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 animate-fade-in-up">
           <Outlet />
         </div>
       </main>

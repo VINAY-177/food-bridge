@@ -45,26 +45,37 @@ export default function Sidebar({ collapsed, onToggle }) {
     navigate("/login");
   };
 
+  const roleBadgeStyle = {
+    donor: { bg: "#E8F5E9", color: "#2E7D32", label: "Donor" },
+    ngo: { bg: "#E3F2FD", color: "#1565C0", label: "NGO" },
+    admin: { bg: "#FFF3E0", color: "#E65100", label: "Admin" },
+  };
+  const roleInfo = roleBadgeStyle[user?.role] || roleBadgeStyle.donor;
+
   return (
     <aside
       data-testid="sidebar"
-      className={`${collapsed ? "w-[72px]" : "w-64"} bg-white border-r border-gray-100 flex flex-col h-screen transition-all duration-200 shrink-0`}
+      className={`${collapsed ? "w-[72px]" : "w-[260px]"} sidebar-gradient border-r flex flex-col h-screen transition-all duration-300 shrink-0 shadow-sm`}
+      style={{ borderColor: "hsl(220, 15%, 92%)" }}
     >
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-gray-100">
-        <div className="w-9 h-9 rounded-lg bg-[#2E7D32] flex items-center justify-center shrink-0">
+      <div className={`flex items-center ${collapsed ? "justify-center" : "gap-3 px-4"} h-16 border-b`} style={{ borderColor: "hsl(220, 15%, 92%)" }}>
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shrink-0 shadow-sm">
           <Leaf className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
-          <span className="font-semibold text-[#0F172A] text-lg tracking-tight truncate">
-            MealBridge
-          </span>
+          <div className="flex-1 min-w-0">
+            <span className="font-bold text-[#0F172A] text-[17px] tracking-tight truncate block">
+              MealBridge
+            </span>
+            <span className="text-[10px] text-gray-400 font-medium tracking-wide uppercase">Food Redistribution</span>
+          </div>
         )}
         <Button
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="ml-auto h-8 w-8 shrink-0"
+          className={`${collapsed ? "mt-0" : "ml-auto"} h-8 w-8 shrink-0 text-gray-400 hover:text-gray-700 hover:bg-gray-100`}
           data-testid="sidebar-toggle"
         >
           {collapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -72,40 +83,61 @@ export default function Sidebar({ collapsed, onToggle }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
+      <nav className="flex-1 py-5 px-3 space-y-0.5 overflow-y-auto">
+        {!collapsed && (
+          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-widest px-2 mb-3">
+            Navigation
+          </p>
+        )}
         {links.map((link) => (
           <NavLink
             key={link.to}
             to={link.to}
             data-testid={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                 isActive
-                  ? "bg-[#E8F5E9] text-[#2E7D32]"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? "bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] text-[#2E7D32] shadow-sm"
+                  : "text-gray-500 hover:bg-gray-100/80 hover:text-gray-900"
               }`
             }
+            title={collapsed ? link.label : undefined}
           >
-            <link.icon className="w-5 h-5 shrink-0" />
-            {!collapsed && <span className="truncate">{link.label}</span>}
+            {({ isActive }) => (
+              <>
+                <link.icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${isActive ? "text-[#2E7D32]" : "text-gray-400 group-hover:text-gray-600"}`} />
+                {!collapsed && (
+                  <span className="truncate">{link.label}</span>
+                )}
+                {!collapsed && isActive && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#2E7D32]" />
+                )}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
 
       {/* User section */}
-      <div className="border-t border-gray-100 p-3">
-        {!collapsed && (
-          <div className="flex items-center gap-3 px-2 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#E8F5E9] flex items-center justify-center">
-              <span className="text-sm font-semibold text-[#2E7D32]">
-                {user?.email?.[0]?.toUpperCase() || "U"}
-              </span>
+      <div className="border-t p-3 space-y-1" style={{ borderColor: "hsl(220, 15%, 92%)" }}>
+        {!collapsed && user && (
+          <div className="flex items-center gap-3 px-2 py-2.5 mb-1 rounded-xl bg-gray-50/60">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm"
+              style={{ backgroundColor: roleInfo.bg, color: roleInfo.color }}
+            >
+              {user?.email?.[0]?.toUpperCase() || "U"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="text-sm font-semibold text-gray-900 truncate">
                 {user?.org_name || user?.email}
               </p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              <span
+                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md"
+                style={{ backgroundColor: roleInfo.bg, color: roleInfo.color }}
+              >
+                {roleInfo.label}
+              </span>
             </div>
           </div>
         )}
@@ -113,10 +145,12 @@ export default function Sidebar({ collapsed, onToggle }) {
           variant="ghost"
           onClick={handleLogout}
           data-testid="logout-btn"
-          className={`w-full text-gray-600 hover:text-red-600 hover:bg-red-50 ${collapsed ? "px-0 justify-center" : "justify-start"}`}
+          className={`w-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors duration-150 rounded-xl ${
+            collapsed ? "px-0 justify-center" : "justify-start gap-2"
+          }`}
         >
-          <LogOut className="w-4 h-4 shrink-0" />
-          {!collapsed && <span className="ml-2">Logout</span>}
+          <LogOut className="w-[18px] h-[18px] shrink-0" />
+          {!collapsed && <span className="text-sm font-medium">Logout</span>}
         </Button>
       </div>
     </aside>
