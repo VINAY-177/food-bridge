@@ -69,36 +69,37 @@ export default function Login() {
   return (
     <div className="min-h-screen flex" data-testid="login-page">
       {/* Left - Form Panel */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white relative">
-        {/* Subtle background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8F5E9] rounded-full opacity-30 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#F1F8E9] rounded-full opacity-40 blur-2xl pointer-events-none" />
+      <div className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden bg-background">
+        {/* Animated background decoration grids & ambient blobs */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-400/10 dark:bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-green-400/10 dark:bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-        <div className="w-full max-w-md relative z-10 animate-fade-in-up">
+        <div className="w-full max-w-md relative z-10 animate-fade-in-up bg-card/80 backdrop-blur-xl rounded-[2rem] p-8 border border-border/50 shadow-2xl shadow-green-900/5">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-10">
-            <div className="logo-3d w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shadow-lg shadow-green-200">
+            <div className="logo-3d w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shadow-lg shadow-green-500/20">
               <Leaf className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-[#0F172A] tracking-tight leading-none">MealBridge</h1>
-              <p className="text-[11px] text-gray-400 font-medium tracking-widest uppercase mt-0.5">For Good</p>
+              <h1 className="text-2xl font-bold text-foreground tracking-tight leading-none">MealBridge</h1>
+              <p className="text-[11px] text-muted-foreground font-medium tracking-widest uppercase mt-0.5">For Good</p>
             </div>
           </div>
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-100/80 p-1 rounded-xl h-11">
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-muted/60 p-1 rounded-xl h-11">
               <TabsTrigger
                 value="login"
                 data-testid="login-tab"
-                className="rounded-lg text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-[#2E7D32] data-[state=active]:shadow-sm transition-all"
+                className="rounded-lg text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-[#2E7D32] data-[state=active]:shadow-sm transition-all"
               >
                 Sign In
               </TabsTrigger>
               <TabsTrigger
                 value="register"
                 data-testid="register-tab"
-                className="rounded-lg text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-[#2E7D32] data-[state=active]:shadow-sm transition-all"
+                className="rounded-lg text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-[#2E7D32] data-[state=active]:shadow-sm transition-all"
               >
                 Register
               </TabsTrigger>
@@ -107,8 +108,8 @@ export default function Login() {
             {/* Login Tab */}
             <TabsContent value="login" className="animate-fade-in-up">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-[#0F172A] tracking-tight">Welcome back</h2>
-                <p className="text-gray-500 text-sm mt-1">Sign in to continue managing food redistribution</p>
+                <h2 className="text-2xl font-bold text-foreground tracking-tight">Welcome back</h2>
+                <p className="text-muted-foreground text-sm mt-1">Sign in to continue managing food redistribution</p>
               </div>
 
               <form onSubmit={handleLogin} className="space-y-5">
@@ -159,8 +160,8 @@ export default function Login() {
             {/* Register Tab */}
             <TabsContent value="register" className="animate-fade-in-up">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-[#0F172A] tracking-tight">Create account</h2>
-                <p className="text-gray-500 text-sm mt-1">Join the food redistribution network</p>
+                <h2 className="text-2xl font-bold text-foreground tracking-tight">Create account</h2>
+                <p className="text-muted-foreground text-sm mt-1">Join the food redistribution network</p>
               </div>
 
               <form onSubmit={handleRegister} className="space-y-4">
