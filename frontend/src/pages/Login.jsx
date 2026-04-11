@@ -77,7 +77,7 @@ export default function Login() {
         <div className="w-full max-w-md relative z-10 animate-fade-in-up">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shadow-lg shadow-green-200">
+            <div className="logo-3d w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shadow-lg shadow-green-200">
               <Leaf className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -140,7 +140,7 @@ export default function Login() {
                   type="submit"
                   data-testid="login-submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white h-11 rounded-xl font-semibold shadow-md shadow-green-100 transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-[#2E7D32] to-[#388E3C] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white h-11 rounded-xl font-semibold shadow-md shadow-green-100 transition-all duration-200 btn-3d"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">

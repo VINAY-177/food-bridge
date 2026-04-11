@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import api from "@/services/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Card3D from "@/components/ui/Card3D";
 import { Badge } from "@/components/ui/badge";
 import {
   Package, Truck, UtensilsCrossed, Wind, Users, Clock, Leaf, TrendingUp, ArrowUpRight
@@ -23,40 +24,43 @@ const CHART_TOOLTIP_STYLE = {
 
 function KPICard({ title, value, icon: Icon, gradient = ["#2E7D32", "#4CAF50"], subtitle, trend }) {
   return (
-    <Card className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-200 card-hover kpi-accent overflow-hidden group">
-      <CardContent className="p-6">
+    <Card3D
+      className="bg-card rounded-2xl border border-border shadow-sm kpi-accent overflow-hidden relative"
+      intensity={8}
+    >
+      <CardContent className="p-6 relative z-10">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{title}</p>
-            <p className="text-[2rem] font-black mt-2 text-[#0F172A] leading-none tracking-tight">{value}</p>
-            {subtitle && <p className="text-xs text-gray-400 mt-1.5 font-medium">{subtitle}</p>}
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{title}</p>
+            <p className="stat-3d text-[2rem] font-black mt-2 text-foreground leading-none tracking-tight">{value}</p>
+            {subtitle && <p className="text-xs text-muted-foreground mt-1.5 font-medium">{subtitle}</p>}
           </div>
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform duration-200"
+            className="badge-3d w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
             style={{ background: `linear-gradient(135deg, ${gradient[0]}20, ${gradient[1]}40)` }}
           >
             <Icon className="w-5 h-5" style={{ color: gradient[0] }} />
           </div>
         </div>
         {trend !== undefined && (
-          <div className="flex items-center gap-1 mt-3 pt-3 border-t border-gray-50">
+          <div className="flex items-center gap-1 mt-3 pt-3 border-t border-border">
             <ArrowUpRight className="w-3.5 h-3.5 text-green-500" />
             <span className="text-xs font-semibold text-green-600">{trend}</span>
-            <span className="text-xs text-gray-400">vs last month</span>
+            <span className="text-xs text-muted-foreground">vs last month</span>
           </div>
         )}
       </CardContent>
-    </Card>
+    </Card3D>
   );
 }
 
 function ChartCard({ title, icon: Icon, children, className = "" }) {
   return (
-    <Card className={`bg-white rounded-2xl border border-gray-100 shadow-sm ${className}`}>
+    <Card className={`bg-card rounded-2xl border border-border shadow-sm depth-card ${className}`}>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-bold text-[#0F172A] flex items-center gap-2.5">
-          {Icon && <div className="w-7 h-7 rounded-lg bg-[#E8F5E9] flex items-center justify-center">
-            <Icon className="w-4 h-4 text-[#2E7D32]" />
+        <CardTitle className="text-base font-bold text-foreground flex items-center gap-2.5">
+          {Icon && <div className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center">
+            <Icon className="w-4 h-4 text-primary" />
           </div>}
           {title}
         </CardTitle>
@@ -69,11 +73,13 @@ function ChartCard({ title, icon: Icon, children, className = "" }) {
 function PageHeader({ title, subtitle }) {
   return (
     <div className="mb-8">
-      <h1 className="text-3xl font-black text-[#0F172A] tracking-tight">{title}</h1>
-      <p className="text-gray-500 mt-1.5 text-sm font-medium">{subtitle}</p>
+      <h1 className="text-3xl font-black text-foreground tracking-tight">{title}</h1>
+      <p className="text-muted-foreground mt-1.5 text-sm font-medium">{subtitle}</p>
     </div>
   );
 }
+
+
 
 const statusBadgeClass = {
   available: "bg-emerald-50 text-emerald-700 border-emerald-200",

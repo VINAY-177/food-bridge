@@ -285,3 +285,147 @@ input:focus, textarea:focus {
 .theme-toggle:hover {
     transform: scale(1.05);
 }
+
+/* =============================================
+   3D UI EFFECTS
+   ============================================= */
+
+/* Perspective scene wrapper */
+.scene-3d {
+    perspective: 900px;
+    perspective-origin: 50% 50%;
+}
+
+/* Card 3D tilt — JS sets --rx and --ry via inline style */
+.card-3d {
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transition: transform 0.12s ease, box-shadow 0.2s ease;
+    will-change: transform;
+}
+.card-3d:hover {
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.dark .card-3d:hover {
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55),
+        0 8px 24px rgba(0, 0, 0, 0.35);
+}
+/* Reset on leave — smooth snap back */
+.card-3d-reset {
+    transform: perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0) !important;
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease !important;
+}
+
+/* Floating inner highlight layer (simulates top light) */
+.card-3d::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0) 60%
+    );
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.2s;
+}
+.dark .card-3d::before {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.07) 0%,
+        rgba(255, 255, 255, 0) 60%
+    );
+}
+
+/* Elevated icon badge — pops forward in Z */
+.badge-3d {
+    transform: translateZ(20px);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18));
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+.card-3d:hover .badge-3d {
+    transform: translateZ(32px) scale(1.08);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
+}
+
+/* 3D press button effect */
+.btn-3d {
+    position: relative;
+    transform: perspective(400px) translateZ(0);
+    box-shadow:
+        0 4px 0 hsl(var(--primary) / 0.5),
+        0 6px 16px hsl(var(--primary) / 0.25);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.btn-3d:hover {
+    transform: perspective(400px) translateZ(4px) translateY(-2px);
+    box-shadow:
+        0 6px 0 hsl(var(--primary) / 0.5),
+        0 10px 24px hsl(var(--primary) / 0.3);
+}
+.btn-3d:active {
+    transform: perspective(400px) translateZ(-2px) translateY(3px);
+    box-shadow:
+        0 1px 0 hsl(var(--primary) / 0.5),
+        0 2px 8px hsl(var(--primary) / 0.2);
+}
+
+/* 3D floating stat number */
+.stat-3d {
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.4),
+        0 2px 4px rgba(0, 0, 0, 0.12);
+}
+.dark .stat-3d {
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.06),
+        0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Stacked depth layers for chart cards */
+.depth-card {
+    position: relative;
+}
+.depth-card::after {
+    content: '';
+    position: absolute;
+    inset: 6px -4px -6px 4px;
+    background: hsl(var(--border));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.5;
+    transition: inset 0.2s ease, opacity 0.2s;
+}
+.depth-card:hover::after {
+    inset: 10px -6px -10px 6px;
+    opacity: 0.35;
+}
+.dark .depth-card::after {
+    background: hsl(224, 20%, 18%);
+    opacity: 0.7;
+}
+
+/* 3D sidebar logo pulse ring */
+.logo-3d {
+    position: relative;
+    transform-style: preserve-3d;
+}
+.logo-3d::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    border: 2px solid hsl(var(--primary) / 0.3);
+    transform: translateZ(-6px);
+    animation: ring-pulse 3s ease infinite;
+}
+@keyframes ring-pulse {
+    0%, 100% { opacity: 0.3; transform: translateZ(-6px) scale(1); }
+    50%       { opacity: 0.7; transform: translateZ(-6px) scale(1.06); }
+}
+

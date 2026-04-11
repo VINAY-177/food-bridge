@@ -68,7 +68,7 @@ export default function Sidebar({ collapsed, onToggle }) {
         className={`flex items-center ${collapsed ? "justify-center" : "gap-3 px-4"} h-16 border-b`}
         style={{ borderColor: isDark ? "hsl(224, 20%, 22%)" : "hsl(220, 15%, 92%)" }}
       >
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shrink-0 shadow-sm">
+        <div className="logo-3d w-9 h-9 rounded-xl bg-gradient-to-br from-[#2E7D32] to-[#4CAF50] flex items-center justify-center shrink-0 shadow-sm">
           <Leaf className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
