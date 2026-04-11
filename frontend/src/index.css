@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== LIGHT THEME ===== */
 @layer base {
     :root {
         --background: 140 25% 97%;
@@ -26,22 +27,59 @@
         --input: 220 15% 90%;
         --ring: 142 71% 28%;
         --radius: 0.875rem;
+
+        /* Charts */
         --chart-1: 142 71% 28%;
         --chart-2: 142 50% 55%;
         --chart-3: 36 100% 52%;
         --chart-4: 50 95% 58%;
         --chart-5: 88 50% 67%;
 
-        /* Custom design tokens */
+        /* App-level */
         --sidebar-bg: 0 0% 100%;
         --sidebar-border: 220 15% 92%;
-        --surface-1: 0 0% 100%;
-        --surface-2: 140 25% 97%;
-        --sidebar-width: 260px;
-        --sidebar-collapsed-width: 72px;
+        --page-bg: 140 25% 97%;
     }
 }
 
+/* ===== DARK THEME ===== */
+@layer base {
+    .dark {
+        --background: 224 28% 10%;
+        --foreground: 210 20% 94%;
+        --card: 224 25% 14%;
+        --card-foreground: 210 20% 94%;
+        --popover: 224 25% 12%;
+        --popover-foreground: 210 20% 94%;
+        --primary: 142 60% 42%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 224 20% 20%;
+        --secondary-foreground: 142 40% 70%;
+        --muted: 224 20% 18%;
+        --muted-foreground: 215 15% 55%;
+        --accent: 36 100% 52%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 224 20% 22%;
+        --input: 224 20% 22%;
+        --ring: 142 60% 42%;
+
+        /* Charts */
+        --chart-1: 142 60% 42%;
+        --chart-2: 142 50% 60%;
+        --chart-3: 36 100% 52%;
+        --chart-4: 50 95% 58%;
+        --chart-5: 88 50% 67%;
+
+        /* App-level */
+        --sidebar-bg: 224 28% 12%;
+        --sidebar-border: 224 20% 20%;
+        --page-bg: 224 28% 10%;
+    }
+}
+
+/* ===== Base styles ===== */
 @layer base {
     * {
         @apply border-border;
@@ -50,21 +88,75 @@
         @apply bg-background text-foreground antialiased;
         font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
         letter-spacing: -0.01em;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         font-weight: 700;
         letter-spacing: -0.025em;
     }
-}
-
-@layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
     }
 }
 
-/* ===== Custom Animations ===== */
+/* ===== Dark mode overrides for hardcoded colors ===== */
+.dark .bg-white {
+    background-color: hsl(var(--card)) !important;
+}
+.dark .bg-gray-50,
+.dark .bg-gray-50\/60 {
+    background-color: hsl(var(--muted)) !important;
+}
+.dark .bg-gray-100,
+.dark .bg-gray-100\/80 {
+    background-color: hsl(224, 20%, 20%) !important;
+}
+.dark .border-gray-100,
+.dark .border-gray-200 {
+    border-color: hsl(var(--border)) !important;
+}
+.dark .text-gray-900,
+.dark .text-\[\#0F172A\] {
+    color: hsl(var(--foreground)) !important;
+}
+.dark .text-gray-500,
+.dark .text-gray-600 {
+    color: hsl(var(--muted-foreground)) !important;
+}
+.dark .text-gray-400 {
+    color: hsl(215, 15%, 45%) !important;
+}
+.dark .sidebar-gradient {
+    background: linear-gradient(180deg, hsl(224, 28%, 13%) 0%, hsl(224, 28%, 11%) 100%) !important;
+}
+.dark .skeleton {
+    background: linear-gradient(90deg, hsl(224, 20%, 18%) 25%, hsl(224, 20%, 22%) 50%, hsl(224, 20%, 18%) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+.dark .card-hover:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    border-color: hsl(var(--primary) / 0.3) !important;
+}
+.dark .glass {
+    background: rgba(30, 35, 55, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+/* Input dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+    background-color: hsl(var(--muted)) !important;
+    border-color: hsl(var(--border)) !important;
+    color: hsl(var(--foreground)) !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: hsl(215, 15%, 42%) !important;
+}
+
+/* ===== Animations ===== */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
@@ -81,12 +173,19 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
 }
+@keyframes theme-toggle-spin {
+    from { transform: rotate(-30deg) scale(0.8); opacity: 0; }
+    to { transform: rotate(0deg) scale(1); opacity: 1; }
+}
 
 .animate-fade-in-up {
     animation: fadeInUp 0.35s ease both;
 }
 .animate-fade-in {
     animation: fadeIn 0.25s ease both;
+}
+.animate-theme-spin {
+    animation: theme-toggle-spin 0.3s ease both;
 }
 
 /* ===== Leaflet overrides ===== */
@@ -98,13 +197,8 @@
 }
 
 /* ===== Custom Scrollbar ===== */
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
     background: hsl(var(--muted-foreground) / 0.25);
     border-radius: 100px;
@@ -121,7 +215,7 @@
     border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-/* ===== Shimmer Skeleton ===== */
+/* ===== Skeleton Shimmer ===== */
 .skeleton {
     background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--border)) 50%, hsl(var(--muted)) 75%);
     background-size: 200% 100%;
@@ -129,12 +223,12 @@
     border-radius: 6px;
 }
 
-/* ===== Card Hover Effects ===== */
+/* ===== Card Hover ===== */
 .card-hover {
     transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 .card-hover:hover {
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     transform: translateY(-1px);
     border-color: hsl(var(--primary) / 0.2) !important;
 }
@@ -142,17 +236,10 @@
 /* ===== Sidebar Gradient ===== */
 .sidebar-gradient {
     background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+    transition: background 0.3s ease;
 }
 
-/* ===== Status Badge Glow ===== */
-.badge-available {
-    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
-}
-.badge-urgent {
-    animation: pulse-soft 2s ease infinite;
-}
-
-/* ===== KPI Card gradient accent bars ===== */
+/* ===== KPI Accent ===== */
 .kpi-accent {
     position: relative;
     overflow: hidden;
@@ -166,21 +253,35 @@
     opacity: 0;
     transition: opacity 0.3s;
 }
-.kpi-accent:hover::before {
-    opacity: 1;
-}
+.kpi-accent:hover::before { opacity: 1; }
 
-/* ===== Focus ring improvements ===== */
+/* ===== Focus ring ===== */
 *:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
     border-radius: 4px;
 }
 
-/* ===== Input improvements ===== */
+/* ===== Input transitions ===== */
 input, textarea, select {
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s, background-color 0.3s;
 }
 input:focus, textarea:focus {
     box-shadow: 0 0 0 3px hsl(var(--primary) / 0.12);
+}
+
+/* ===== Theme toggle button ===== */
+.theme-toggle {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+.theme-toggle:hover {
+    transform: scale(1.05);
 }
