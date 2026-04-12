@@ -39,10 +39,12 @@
         --sidebar-bg: rgba(255, 255, 255, 0.7);
         --sidebar-border: rgba(255, 255, 255, 0.5);
         --page-bg: transparent;
-        --mesh-color-1: #e0f2f1;
-        --mesh-color-2: #f1f8e9;
-        --mesh-color-3: #e8f5e9;
-        --mesh-color-4: #fff9c4;
+        --mesh-color-1: #d8f0ec;
+        --mesh-color-2: #c8ebd4;
+        --mesh-color-3: #e0f7e9;
+        --mesh-color-4: #fffde7;
+        --dot-color: rgba(46, 125, 50, 0.18);
+        --dot-opacity: 1;
         
         --bg-card: hsl(var(--card));
         --bg-secondary: hsl(var(--secondary));
@@ -86,10 +88,12 @@
         --sidebar-bg: rgba(15, 23, 42, 0.75);
         --sidebar-border: rgba(255, 255, 255, 0.05);
         --page-bg: transparent;
-        --mesh-color-1: #0f172a;
-        --mesh-color-2: #064e3b;
-        --mesh-color-3: #022c22;
-        --mesh-color-4: #1e3a8a;
+        --mesh-color-1: #0a1628;
+        --mesh-color-2: #05372a;
+        --mesh-color-3: #082039;
+        --mesh-color-4: #1a2f1a;
+        --dot-color: rgba(76, 175, 80, 0.12);
+        --dot-opacity: 1;
 
         --bg-card: hsl(var(--card));
         --bg-secondary: hsl(var(--secondary));
@@ -107,17 +111,39 @@
     body {
         @apply text-foreground antialiased;
         background-color: var(--mesh-color-1);
-        background-image: 
-            radial-gradient(at 0% 0%, var(--mesh-color-2) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, var(--mesh-color-3) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, var(--mesh-color-4) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, var(--mesh-color-2) 0px, transparent 50%);
-        background-size: 200% 200%;
-        animation: mesh-gradient-flow 15s ease infinite alternate;
         font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
         letter-spacing: -0.01em;
         transition: background-color 0.3s ease, color 0.3s ease;
         min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+    /* === Primary animated gradient layer === */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background-color: var(--mesh-color-1);
+        background-image: 
+            radial-gradient(ellipse 80% 60% at 10% 10%, var(--mesh-color-2) 0%, transparent 60%),
+            radial-gradient(ellipse 70% 50% at 90% 5%,  var(--mesh-color-3) 0%, transparent 55%),
+            radial-gradient(ellipse 60% 70% at 85% 90%, var(--mesh-color-4) 0%, transparent 60%),
+            radial-gradient(ellipse 75% 55% at 5%  90%, var(--mesh-color-2) 0%, transparent 55%),
+            radial-gradient(ellipse 50% 45% at 50% 50%, var(--mesh-color-3) 0%, transparent 70%);
+        background-size: 100% 100%;
+        animation: bg-shift 20s ease-in-out infinite alternate;
+    }
+    /* === Dot grid pattern overlay === */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+        background-size: 28px 28px;
+        opacity: var(--dot-opacity);
+        pointer-events: none;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -128,6 +154,24 @@
         display: contents !important;
     }
 }
+
+/* ===== Floating orb layer ===== */
+#bg-orbs {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    animation: orb-float linear infinite;
+    will-change: transform;
+}
+.dark .bg-orb { opacity: 0.35; }
 
 /* ===== Dark mode overrides for hardcoded colors ===== */
 .dark .bg-white {
@@ -188,10 +232,18 @@
 }
 
 /* ===== Animations ===== */
-@keyframes mesh-gradient-flow {
-    0% { background-position: 0% 0%; }
-    50% { background-position: 100% 100%; }
-    100% { background-position: 0% 0%; }
+@keyframes bg-shift {
+    0%   { filter: hue-rotate(0deg)   brightness(1);   }
+    33%  { filter: hue-rotate(10deg)  brightness(1.04); }
+    66%  { filter: hue-rotate(-8deg)  brightness(0.97); }
+    100% { filter: hue-rotate(5deg)   brightness(1.02); }
+}
+@keyframes orb-float {
+    0%   { transform: translate(0px, 0px)   scale(1);    }
+    25%  { transform: translate(30px, -40px) scale(1.08); }
+    50%  { transform: translate(-20px, 30px) scale(0.94); }
+    75%  { transform: translate(40px,  20px) scale(1.05); }
+    100% { transform: translate(0px, 0px)   scale(1);    }
 }
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px) translateZ(0); }
